@@ -1,0 +1,7 @@
+export enum SyncStateEnum {
+  STARTED = 'STARTED',
+  SYNCHRONIZING = 'SYNCHRONIZING',
+  FINISHED = 'FINISHED',
+  SUCCESS = 'SUCCESS',
+  FAILDED = 'FAILDED',
+}

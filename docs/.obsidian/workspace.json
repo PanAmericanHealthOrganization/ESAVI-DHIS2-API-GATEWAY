@@ -1,0 +1,161 @@
+{
+  "main": {
+    "id": "472c28da8e3d10f8",
+    "type": "split",
+    "children": [
+      {
+        "id": "9479d07a48696400",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f30d84830dc99604",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "wiky/assets/arquitectura.svg"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "feb2036a0cf5d45c",
+    "type": "split",
+    "children": [
+      {
+        "id": "9005591edf027621",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9f860b1d1b0d3dc7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "e39acb1ef5dec27e",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "511a59a1ed65de49",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "6ad37bb0b4570d64",
+    "type": "split",
+    "children": [
+      {
+        "id": "5b89763fa618d7b3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "303175c01fbd483b",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "wiky/assets/arquitectura.svg",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "bcdd59523dc9a84f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "wiky/assets/arquitectura.svg",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "a9c684049eb5cc0f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "8de357c9e64c7780",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "wiky/assets/arquitectura.svg"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false
+    }
+  },
+  "active": "f30d84830dc99604",
+  "lastOpenFiles": [
+    "Actividades semana 15 - 19 Jul 2024 1.pdf",
+    "wiky/modulos/solucion.md",
+    "wiky/despliegue.md",
+    "wiky/Variables de entorno.md",
+    "wiky/modulos/whodrug.md",
+    "wiky/modulos/dhis2.md",
+    "wiky/modulos/auth.md",
+    "wiky/Sin título.canvas",
+    "README.md",
+    "Sin título.canvas",
+    "wiky/assets/arquitectura.svg"
+  ]
+}
