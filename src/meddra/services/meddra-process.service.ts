@@ -1,7 +1,7 @@
-import { In, InsertResult, Repository } from 'typeorm';
+import { DataSource, In, InsertResult, Repository } from 'typeorm';
 import { LLT } from '../models/standar/llt.entity';
 
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import { join } from 'path';
 import * as readline from 'readline';
@@ -26,6 +26,9 @@ export class MeddraProcessFilesService {
 
     @InjectRepository(MeddraSync, 'meddra')
     private readonly meddraSuncRepository: Repository<MeddraSync>,
+
+    @InjectDataSource('meddra')
+    private dataSource: DataSource,
   ) {
     this.meddraVersionFilePath = '';
   }
@@ -47,22 +50,36 @@ export class MeddraProcessFilesService {
       throw new Error('El directorio no existe');
     }
 
-    const versionEntity = await this.meddraSuncRepository.save(new MeddraSync(version, lang, description));
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    let socDB = [];
+    let ptDB = [];
+    let llDB = [];
+    try {
+      const versionEntity = await this.meddraSuncRepository.save(new MeddraSync(version, lang, description));
 
-    // const llt = await readFileContent(version, lang, 'llt.asc');
+      // const llt = await readFileContent(version, lang, 'llt.asc');
 
-    const soc = await readFileContent(version, lang, 'soc.asc');
-    const socDB = await this.processSOC(soc, versionEntity);
+      const soc = await readFileContent(version, lang, 'soc.asc');
+      socDB = await this.processSOC(soc, versionEntity);
 
-    const ptDataFile = await readFileContent(version, lang, 'pt.asc');
-    const ptDB = await this.processPT(ptDataFile, socDB);
+      const ptDataFile = await readFileContent(version, lang, 'pt.asc');
+      ptDB = await this.processPT(ptDataFile, socDB);
 
-    const lltDataFile = await readFileContent(version, lang, 'llt.asc');
-    const llDB = await this.processLLT(lltDataFile, ptDB);
+      const lltDataFile = await readFileContent(version, lang, 'llt.asc');
+      llDB = await this.processLLT(lltDataFile, ptDB);
+    } catch (e) {
+      await queryRunner.rollbackTransaction();
+      throw e;
+    } finally {
+      await queryRunner.release();
+    }
+    this.logger.log('Proceso de archivos de meddra finalizado');
+    return { soc: socDB, pt: ptDB, llt: llDB };
     /**
      *
      */
-    return { soc: socDB, pt: ptDB, llt: llDB };
   }
 
   /**
@@ -83,6 +100,7 @@ export class MeddraProcessFilesService {
     });
     const inserted = await this.socRepository.insert(lltList);
     const ids = inserted.identifiers.map((id) => id.id);
+    this.logger.log(`Insertados SOC ${lltList.length} de ${lltList.length}`);
     return await this.socRepository.find({ where: [{ id: In(ids) }] });
   }
   /**
@@ -97,16 +115,21 @@ export class MeddraProcessFilesService {
       const pt = new PT();
       pt.code = line[0];
       pt.name = line[1];
-      pt.socCode = line[2];
-      pt.soc = socs.find((soc) => soc.code === line[2]);
+      pt.socCode = line[3];
+      pt.soc = socs.find((soc) => soc.code === line[3]);
       ptList.push(pt);
     });
-    const batchSize = 5000;
     const insertedResultIds = [];
-    for (let i = 0; i < ptList.length; i += batchSize) {
-      const inserted = await this.ptRepository.insert(ptList);
+    // procesar de 5000 en 5000
+    const chunkSize = 5000;
+    for (let i = 0; i < ptList.length; i += chunkSize) {
+      // Extraer un "chunk" o trozo de la lista
+      const chunkList = ptList.slice(i, i + chunkSize);
+
+      // Procesa el chunk aquí
+      const inserted = await this.ptRepository.insert(chunkList);
       const ids = inserted.identifiers.map((id) => id.id);
-      this.logger.log(`Insertados PT ${i + batchSize} de ${ptList.length}`);
+      this.logger.log(`Insertados PT ${i + chunkSize} de ${ptList.length}`);
       insertedResultIds.concat(ids);
     }
     return this.ptRepository.find({ where: { id: In(insertedResultIds) } });
@@ -123,8 +146,8 @@ export class MeddraProcessFilesService {
       const socs = new LLT();
       socs.code = line[0];
       socs.name = line[1];
-      socs.ptCode = line[2];
-      socs.pt = pts.find((pt) => pt.code === line[2]);
+      socs.ptCode = line[3];
+      socs.pt = pts.find((pt) => pt.code === line[3]);
       lltList.push(socs);
     });
     // procesar de 5000 en 5000

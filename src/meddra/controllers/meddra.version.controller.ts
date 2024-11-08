@@ -1,7 +1,17 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  FileTypeValidator,
+  HttpException,
+  HttpStatus,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  Post,
+  UploadedFile,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ProcessVersionReqDTO } from '../models/dto/meddra.query';
 import { MeddraProcessFilesService } from '../services/meddra-process.service';
-import { ApiTags } from '@nestjs/swagger';
 /**
  * Controlador para procesar los archivos de meddra
  */
@@ -18,5 +28,17 @@ export class MeddraVersionController {
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  @Post('upload')
+  uploadFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 1000 }), new FileTypeValidator({ fileType: 'image/jpeg' })],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    console.log(file);
   }
 }

@@ -1,26 +1,26 @@
 import { HttpModule } from '@nestjs/axios';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
-import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SettingsModule } from 'src/settings/settings.module';
 import { AutoEncryptSubscriber } from 'typeorm-encrypted/lib/subscribers/AutoEncryptSubscriber';
 import { MeddraController } from './controllers/meddra.controller';
-import { MeddraQuery } from './models/meddraquerys.entity';
-import { MeddraClientService } from './services/meddra-client.service';
-import { MeddraHistoryService } from './services/meddra-history.service';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LLT } from './models/standar/llt.entity';
-import { PT } from './models/standar/pt.entity';
-import { SOC } from './models/standar/soc.entity';
+import { MeddraVersionController } from './controllers/meddra.version.controller';
+import { cie10Meddra } from './models/mapping/cie19meddra.entity';
 import { MappingDefinition } from './models/mapping/mappingDefinition.entity';
 import { Mappings } from './models/mapping/mappings.entity';
-import { MeddraStandarService } from './services/meddra-standar.service';
-import { cie10Meddra } from './models/mapping/cie19meddra.entity';
+import { MeddraQuery } from './models/meddraquerys.entity';
 import { CIE10ES } from './models/standar/cie_19.entity';
-import { MeddraVersionController } from './controllers/meddra.version.controller';
-import { MeddraProcessFilesService } from './services/meddra-process.service';
+import { LLT } from './models/standar/llt.entity';
 import { MeddraSync } from './models/standar/meddraSync.entity';
+import { PT } from './models/standar/pt.entity';
+import { SOC } from './models/standar/soc.entity';
+import { MeddraClientService } from './services/meddra-client.service';
+import { MeddraHistoryService } from './services/meddra-history.service';
+import { MeddraProcessFilesService } from './services/meddra-process.service';
+import { MeddraStandarService } from './services/meddra-standar.service';
 
 export const MEDDRA_DS = 'meddra';
 @Module({
